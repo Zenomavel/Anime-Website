@@ -51,6 +51,35 @@
             padding: 10px 0;
             margin-top: 20px;
         }
+         /* Basic gallery layout using CSS Grid */
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  border-radius: 10px;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+/* Optional: Add a subtle shadow effect */
+.gallery-item img {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-item:hover img {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
     </style>
 </head>
 <body>
@@ -71,7 +100,8 @@
         <h2>Home</h2>
         <p>Discover Your Next Favorite Anime!</p>
     </section>
-
+    
+      
     <!-- About Section -->
     <section id="about">
         <h2>About</h2>
@@ -80,11 +110,31 @@
 
     <!-- Upcoming Animes -->
     <section id="Upcoming Animes">
-        <h2>Upcoming Animes</h2>
+        <h2>Animes</h2>
         <div class="anime-section">
         </div>
     </section>
-
+    <section class="photo-gallery">
+        <div class="gallery-item">
+          <img src="https://i.pinimg.com/736x/bf/16/a6/bf16a658662656209bcaacaa76ca771a.jpg" alt="Solo Leveling" />
+        </div>
+        <div class="gallery-item">
+          <img src="https://motionbgs.com/i/c/364x205/media/6727/levi-ackerman-dark.jpg" alt="Attack On Titan" />
+        </div>
+        <div class="gallery-item">
+          <img src="https://4kwallpapers.com/images/walls/thumbs_2t/20236.jpg" alt="Demon Slayer" />
+        </div>
+        <div class="gallery-item">
+            <img src="https://img2.wallspic.com/previews/8/9/6/6/7/176698/176698-izuku_midoriya-my_hero_ones_justice-my_hero_academia-all_might-anime_art-550x310.jpg" alt="My Hero Acadmeia" />
+        </div>
+        <div class="gallery-item">
+            <img src="https://img1.wallspic.com/previews/9/2/0/8/7/178029/178029-your_name_anime-mitsuha_miyamizu-animated_cartoon-anime_art-animation-550x310.jpg" alt="Your lie in April" />
+        </div>
+        <div class="gallery-item">
+            <img src="https://4kwallpapers.com/images/walls/thumbs_2t/19881.jpg" alt="Naruto" />
+        </div>
+        <!-- Add more gallery items as needed -->
+      </section>
     <footer>
         <p>&copy; Phone: 542136589 | Email: sahua@rknec.edu</p>
         <p>All rights are reserved</p>
