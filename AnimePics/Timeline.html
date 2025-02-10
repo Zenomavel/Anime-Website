@@ -17,6 +17,17 @@
         }
 
         
+        [data-theme="dark"] {
+            --background-color: #1a1a1a;
+            --text-color: #f9f9f9;
+            --highlight-color: #ff6600;
+            --header-background: #333333;
+            --table-header-bg: #444444;
+            --table-header-color: #ffffff;
+            --table-row-even: #2a2a2a;
+            --table-row-odd: #333333;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -33,9 +44,9 @@
             flex-direction: column;
             background-color: var(--background-color);
             color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        
         h1 {
             text-align: center;
             padding: 20px;
@@ -44,7 +55,6 @@
             margin: 0;
         }
 
-        
         .content {
             flex: 1;
             display: flex;
@@ -52,6 +62,7 @@
             align-items: center;
             justify-content: flex-start;
         }
+
         .day-selector {
             display: flex;
             justify-content: center;
@@ -74,14 +85,33 @@
             background-color: #0056b3;
         }
 
-        
         .timeline-table {
             width: 80%;
             margin: 20px auto;
             border-collapse: collapse;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            display: none; 
+            display: none;
         }
+       
+        .timeline-table a {
+            color: black; 
+            text-decoration: none;
+        }
+
+        .timeline-table a:hover {
+            color: gray; 
+        }
+
+        
+        [data-theme="dark"] .timeline-table a {
+            color: white; 
+        }
+
+        [data-theme="dark"] .timeline-table a:hover {
+            color: lightgray; 
+        }
+
+
 
         .timeline-table th, .timeline-table td {
             padding: 15px;
@@ -113,7 +143,35 @@
             color: var(--highlight-color);
         }
 
+       
+        .countdown-timer {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 0.9rem;
+            color: #ff6600;
+            font-weight: bold;
+        }
+
         
+        .theme-toggle {
+            flex : auto ;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--highlight-color);
+            color: var(--table-header-color);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: #0056b3;
+        }
+
         footer {
             text-align: center;
             padding: 10px;
@@ -123,8 +181,11 @@
     </style>
 </head>
 <body>
+  
+    <button class="theme-toggle" id="theme-toggle">Toggle Theme</button>
+
     <header>
-        <h1>Timeline of Anime Episode Releases</h1>
+        <h1>Timeline of Anime Episodes</h1>
     </header>
 
     <div class="content">
@@ -138,6 +199,7 @@
             <button data-day="sunday">Sunday</button>
         </div>
 
+       
         <table class="timeline-table" id="monday">
             <thead>
                 <tr>
@@ -149,17 +211,24 @@
             <tbody>
                 <tr>
                     <td>10:30</td>
-                    <td><a href="https://hianime.to/cardfight-vanguard-divinez-deluxe-hen-19480">Cardfight!! Vanguard: Divinez Deluxe-hen</a></td>
+                    <td>
+                        <a href="https://hianime.to/cardfight-vanguard-divinez-deluxe-hen-19480">Cardfight!! Vanguard: Divinez Deluxe-hen</a>
+                        <span class="countdown-timer" id="countdown-1"></span>
+                    </td>
                     <td class="episode-number">Episode 3</td>
                 </tr>
                 <tr>
                     <td>16:30</td>
-                    <td><a href="https://hianime.to/blue-wolves-of-mibu-19350">Blue Wolves of Mibu</a></td>
+                    <td>
+                        <a href="https://hianime.to/blue-wolves-of-mibu-19350">Blue Wolves of Mibu</a>
+                        <span class="countdown-timer" id="countdown-2"></span>
+                    </td>
                     <td class="episode-number">Episode 15</td>
                 </tr>
             </tbody>
         </table>
 
+        
         <table class="timeline-table" id="tuesday">
             <thead>
                 <tr>
@@ -171,13 +240,124 @@
             <tbody>
                 <tr>
                     <td>18:00</td>
-                    <td><a href="https://hianime.to/case-closed-323">Case Closed</a></td>
+                    <td>
+                        <a href="https://hianime.to/case-closed-323">Case Closed</a>
+                        <span class="countdown-timer" id="countdown-3"></span>
+                    </td>
                     <td class="episode-number">Episode 1151</td>
                 </tr>
                 <tr>
                     <td>20:00</td>
-                    <td><a href="https://hianime.to/sakamoto-days-19431">Sakamoto Days</a></td>
+                    <td>
+                        <a href="https://hianime.to/sakamoto-days-19431">Sakamoto Days</a>
+                        <span class="countdown-timer" id="countdown-4"></span>
+                    </td>
                     <td class="episode-number">Episode 4</td>
+                </tr>
+            </tbody>
+        </table>
+
+        
+        <table class="timeline-table" id="wednesday">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Anime</th>
+                    <th>Episode</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>14:00</td>
+                    <td>
+                        <a href="https://hianime.to/one-piece-100">One Piece</a>
+                        <span class="countdown-timer" id="countdown-5"></span>
+                    </td>
+                    <td class="episode-number">Episode 1080</td>
+                </tr>
+            </tbody>
+        </table>
+
+       
+        <table class="timeline-table" id="thursday">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Anime</th>
+                    <th>Episode</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>19:00</td>
+                    <td>
+                        <a href="https://hianime.to/jujutsu-kaisen-178">Jujutsu Kaisen</a>
+                        <span class="countdown-timer" id="countdown-6"></span>
+                    </td>
+                    <td class="episode-number">Episode 25</td>
+                </tr>
+            </tbody>
+        </table>
+
+       
+        <table class="timeline-table" id="friday">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Anime</th>
+                    <th>Episode</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>21:00</td>
+                    <td>
+                        <a href="https://hianime.to/demon-slayer-57">Demon Slayer</a>
+                        <span class="countdown-timer" id="countdown-7"></span>
+                    </td>
+                    <td class="episode-number">Episode 12</td>
+                </tr>
+            </tbody>
+        </table>
+
+       
+        <table class="timeline-table" id="saturday">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Anime</th>
+                    <th>Episode</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>11:00</td>
+                    <td>
+                        <a href="https://hianime.to/naruto-shippuden-355">Naruto Shippuden</a>
+                        <span class="countdown-timer" id="countdown-8"></span>
+                    </td>
+                    <td class="episode-number">Episode 500</td>
+                </tr>
+            </tbody>
+        </table>
+
+        
+        <table class="timeline-table" id="sunday">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Anime</th>
+                    <th>Episode</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>17:00</td>
+                    <td>
+                        <a href="https://hianime.to/attack-on-titan-164">Attack on Titan</a>
+                        <span class="countdown-timer" id="countdown-9"></span>
+                    </td>
+                    <td class="episode-number">Episode 88</td>
                 </tr>
             </tbody>
         </table>
@@ -204,6 +384,69 @@
                     table.style.display = 'table';
                 }
             });
+        });
+
+        // Function to generate random countdown (within 7 days)
+        function getRandomCountdown() {
+            const randomDays = Math.floor(Math.random() * 7);
+            const randomHours = Math.floor(Math.random() * 24);
+            const randomMinutes = Math.floor(Math.random() * 60);
+            const randomSeconds = Math.floor(Math.random() * 60);
+            return {
+                days: randomDays,
+                hours: randomHours,
+                minutes: randomMinutes,
+                seconds: randomSeconds,
+            };
+        }
+
+        // Function to update countdown timers
+        function updateCountdown(timerId, countdown) {
+            const timerElement = document.getElementById(`countdown-${timerId}`);
+            if (timerElement) {
+                timerElement.textContent = `Next Episode in: ${String(countdown.days).padStart(2, '0')}d ${String(countdown.hours).padStart(2, '0')}h ${String(countdown.minutes).padStart(2, '0')}m ${String(countdown.seconds).padStart(2, '0')}s`;
+            }
+        }
+
+        // Initialize countdown timers for each anime
+        for (let i = 1; i <= 9; i++) {
+            const countdown = getRandomCountdown();
+            updateCountdown(i, countdown);
+            setInterval(() => {
+                if (countdown.seconds > 0) {
+                    countdown.seconds--;
+                } else {
+                    countdown.seconds = 59;
+                    if (countdown.minutes > 0) {
+                        countdown.minutes--;
+                    } else {
+                        countdown.minutes = 59;
+                        if (countdown.hours > 0) {
+                            countdown.hours--;
+                        } else {
+                            countdown.hours = 23;
+                            if (countdown.days > 0) {
+                                countdown.days--;
+                            }
+                        }
+                    }
+                }
+                updateCountdown(i, countdown);
+            }, 1000);
+        }
+
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeToggle.textContent = 'Dark Mode';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = 'Light Mode';
+            }
         });
     </script>
 </body>
