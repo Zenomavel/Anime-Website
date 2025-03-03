@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Wishlist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+       
+      
+      body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('https://4kwallpapers.com/images/walls/thumbs_3t/21418.jpg') no-repeat center center fixed;
+    background-size: cover;
+    }
+
+        
+        .background-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            animation: fadeIn 3s ease-in-out;
+        }
+
+
+        
+        .wishlist-container {
+                width: 80%;
+                max-width: 600px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+                text-align: center;
+            }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            background: crimson;
+            color: white;
+            border-radius: 5px;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background: darkred;
+        }
+
+        
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: grab;
+        }
+
+        li.dragging {
+            opacity: 0.5;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .action-buttons i {
+            cursor: pointer;
+            margin: 0 5px;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .delete-btn:hover { color: red; }
+        .watching-btn:hover { color: yellow; }
+        .edit-btn:hover { color: lightblue; }
+
+        .watching {
+            color: yellow;
+        }
+        
+        .watching-active {
+            background: rgba(255, 215, 0, 0.3) !important; 
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+            border-left: 5px solid yellow; 
+            transform: scale(1.05); 
+            transition: 0.3s ease-in-out;
+        }
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        main {
+            flex: 1; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        footer {
+            background: #080505;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="wishlist-container">
+            <h1>Anime Wishlist</h1>
+            <input type="text" id="anime-input" placeholder="Add an anime">
+            <button onclick="addAnime()">Add</button>
+            <ul id="wishlist"></ul>
+        </div>
+    </main>
+
+    <script>
+        const input = document.getElementById("anime-input");
+        const wishlist = document.getElementById("wishlist");
+
+        function addAnime() {
+            const animeName = input.value.trim();
+            if (!animeName) {
+                alert("Enter an anime name!");
+                return;
+            }
+
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <span class="anime-name">${animeName}</span>
+                <div class="action-buttons">
+                    <i class="fas fa-eye watching-btn"></i>
+                    <i class="fas fa-edit edit-btn"></i>
+                    <i class="fas fa-trash delete-btn"></i>
+                </div>
+            `;
+
+          
+            li.querySelector(".watching-btn").addEventListener("click", function() {
+    this.classList.toggle("watching");
+    li.classList.toggle("watching-active"); // Highlight the anime box
+            });
+
+
+            
+            li.querySelector(".edit-btn").addEventListener("click", function() {
+                let newName = prompt("Edit anime name:", animeName);
+                if (newName) {
+                    li.querySelector(".anime-name").textContent = newName;
+                }
+            });
+
+           
+            li.querySelector(".delete-btn").addEventListener("click", function() {
+                wishlist.removeChild(li);
+            });
+
+            
+            li.setAttribute("draggable", true);
+            li.addEventListener("dragstart", () => li.classList.add("dragging"));
+            li.addEventListener("dragend", () => li.classList.remove("dragging"));
+
+            wishlist.appendChild(li);
+            input.value = "";
+        }
+
+        
+        wishlist.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            const dragging = document.querySelector(".dragging");
+            const items = [...wishlist.children].filter(item => item !== dragging);
+            const next = items.find(item => e.clientY < item.offsetTop + item.offsetHeight / 2);
+            wishlist.insertBefore(dragging, next);
+        });
+
+        
+        input.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                addAnime();
+            }
+        });
+
+    </script>
+     
+    
+        <footer>
+            <p>&copy; Phone: 542136589 | Email: sahua@rknec.edu</p>
+            <p>All rights are reserved</p>
+        </footer>
+    </body>    
+</body>
+</html>
