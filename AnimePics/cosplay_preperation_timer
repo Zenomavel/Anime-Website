@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosplay Preparation Timer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+/* Background with Blur Effect */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: url('https://4kwallpapers.com/images/walls/thumbs_3t/20021.jpg') no-repeat center center/cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    filter: blur(8px); /* Blur effect */
+    z-index: -1;
+}
+
+/* Container */
+.container {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Timer */
+.timer-container {
+    margin-top: 20px;
+}
+
+.timer {
+    font-size: 4rem;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+}
+
+/* Buttons */
+.buttons, .adjust-buttons {
+    margin-top: 15px;
+}
+
+button {
+    padding: 12px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#start { background-color: #28a745; color: white; }
+#start:hover { background-color: #218838; }
+
+#pause { background-color: #ffc107; color: white; }
+#pause:hover { background-color: #e0a800; }
+
+#reset { background-color: #dc3545; color: white; }
+#reset:hover { background-color: #c82333; }
+
+.adjust-buttons button {
+    background-color: #007bff;
+    color: white;
+}
+.adjust-buttons button:hover {
+    background-color: #0056b3;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Footer */
+footer {
+    position: fixed;  
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    color: white;
+    font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Cosplay Preparation Timer</h1>
+    
+    <div class="timer-container">
+        <div class="timer">
+            <button class="adjust-btn" id="increase-min">⮘</button>
+            <span id="minutes">25</span>:<span id="seconds">00</span>
+            <button class="adjust-btn" id="decrease-min">⮚</button>
+        </div>
+        
+        <div class="adjust-buttons">
+            <button id="increase-sec">+10s</button>
+            <button id="decrease-sec">-10s</button>
+        </div>
+
+        <div class="buttons">
+            <button id="start">Start</button>
+            <button id="pause">Pause</button>
+            <button id="reset">Reset</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let timer;
+let isRunning = false;
+let minutes = 25;
+let seconds = 0;
+
+const minutesDisplay = document.getElementById("minutes");
+const secondsDisplay = document.getElementById("seconds");
+const startButton = document.getElementById("start");
+const pauseButton = document.getElementById("pause");
+const resetButton = document.getElementById("reset");
+
+// Increase/decrease buttons
+const increaseMin = document.getElementById("increase-min");
+const decreaseMin = document.getElementById("decrease-min");
+const increaseSec = document.getElementById("increase-sec");
+const decreaseSec = document.getElementById("decrease-sec");
+
+// Function to start the timer
+function startTimer() {
+    if (!isRunning) {
+        isRunning = true;
+        timer = setInterval(updateTimer, 1000);
+    }
+}
+
+// Function to pause the timer
+function pauseTimer() {
+    clearInterval(timer);
+    isRunning = false;
+}
+
+// Function to reset the timer
+function resetTimer() {
+    clearInterval(timer);
+    isRunning = false;
+    minutes = 25;
+    seconds = 0;
+    updateDisplay();
+}
+
+// Function to update the timer
+function updateTimer() {
+    if (seconds === 0) {
+        if (minutes === 0) {
+            clearInterval(timer);
+            isRunning = false;
+            return;
+        }
+        minutes--;
+        seconds = 59;
+    } else {
+        seconds--;
+    }
+    updateDisplay();
+}
+
+// Function to update the display
+function updateDisplay() {
+    minutesDisplay.textContent = minutes.toString().padStart(2, "0");
+    secondsDisplay.textContent = seconds.toString().padStart(2, "0");
+}
+
+// Increase/Decrease Functions
+increaseMin.addEventListener("click", () => {
+    if (minutes < 99) minutes++;
+    updateDisplay();
+});
+decreaseMin.addEventListener("click", () => {
+    if (minutes > 0) minutes--;
+    updateDisplay();
+});
+increaseSec.addEventListener("click", () => {
+    seconds += 10;
+    if (seconds >= 60) {
+        minutes++;
+        seconds -= 60;
+    }
+    updateDisplay();
+});
+decreaseSec.addEventListener("click", () => {
+    if (seconds >= 10) {
+        seconds -= 10;
+    } else if (minutes > 0) {
+        minutes--;
+        seconds = 50;
+    }
+    updateDisplay();
+});
+
+// Event Listeners
+startButton.addEventListener("click", startTimer);
+pauseButton.addEventListener("click", pauseTimer);
+resetButton.addEventListener("click", resetTimer);
+</script>
+
+<footer>
+    <p>&copy; Phone: 542136589 | Email: sahua@rknec.edu</p>
+        <p>All rights are reserved</p>
+</footer>
+
+</body>
+</html>
