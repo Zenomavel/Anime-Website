@@ -27,21 +27,106 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
             font-size: 3rem; 
         }
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 86, 179, 0.8);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            z-index: 1000;
+        }
+
+        .menu-button:hover {
+            background: #0056b3;
+        }
+
+        /* Side menu styling */
+        .menu {
+            position: fixed;
+            top: 0;
+            left: -250px; /* Hidden initially */
+            width: 250px;
+            height: 100vh;
+            background: rgba(0, 86, 179, 0.9);
+            padding-top: 60px;
+            transition: left 0.3s ease-in-out;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+        }
+
+        .menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            font-size: 1.2rem;
+            transition: background 0.3s ease;
+        }
+
+        .menu a:hover {
+            background: #ffcc00;
+            color: black;
+        }
+
+        /* Show menu when active */
+        .menu.active {
+            left: 0;
+        }
         nav {
-            background: rgba(0, 86, 179, 0.8); 
-            padding: 1rem; 
+            background: rgba(0, 86, 179, 0.8);
+            padding: 1rem;
             text-align: center;
-            border-radius: 5px; 
+            border-radius: 5px;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            margin-bottom: 10px;
         }
         nav a {
-            color: white; 
-            margin: 0 15px; 
+            color: white;
+            margin: 0 15px;
             text-decoration: none;
             font-size: 1.2rem;
-            transition: color 0.3s; 
+            padding: 10px;
+            transition: color 0.3s, background 0.3s, border-radius 0.3s;
+        }
+        nav a.active {
+            background: #f7f8f8;
+            color: black;
+            border-radius: 5px;
         }
         nav a:hover {
             color: #ffcc00; 
+        }
+        section {
+            padding: 100px 20px;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        #home {
+            background: #f4f4f4;
+        }
+
+        #about {
+            background: #e0e0e0;
+        }
+
+        #Upcoming_Animes {
+            background: #d1d1d1;
+        }
+
+        /* Smooth Scroll Spy Active Section */
+        .highlight {
+            background: #ffcc00 !important;
+            color: black !important;
         }
         
         footer {
@@ -72,28 +157,65 @@
             transform: translateY(100%);
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        .photo-gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 1rem;
-        padding: 1rem;
-        flex: wrap;
+        .photo-gallery-container {
+            text-align: center; /* Centers the heading */
+            padding: 20px;
         }
 
-        .gallery-item img {
-        width: 100%;
-        height: auto;
-        transition: transform 0.3s ease, filter 0.3s ease;
-        border-radius: 10px;
+        .photo-gallery-container h2 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #222; /* Adjust the color as needed */
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .gallery-item:hover .name{
-            opacity: 0.9;
-            transform: translateY(0);
+        .photo-gallery {
+        display: flex;
+        justify-content: space-evenly; /* Distributes images evenly */
+        align-items: center;
+        flex-wrap: wrap; /* Allows wrapping for responsiveness */
+        gap: 20px; /* More space between images */
+        padding: 20px;
+        background: #ccc; /* Adjust as needed */
+        width: 100%;
+    }
+
+        .gallery-item {
+        flex: 1 1 calc(25% - 20px); /* Makes sure images take up more space */
+        max-width: 300px; /* Prevents them from getting too large */
+        position: relative;
+        }
+        .gallery-item .name {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 5px 10px;
+        font-size: 14px;
+        border-radius: 5px;
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+        .gallery-item img {
+            width: 100%; /* Makes images fill their container */
+            height: auto;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .gallery-item:hover .name {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-5px);
         }
         .gallery-item:hover img {
-        transform: scale(1.05);
+        transform: scale(1.1); /* Enlarges slightly on hover */
         filter: brightness(1.2);
-        }
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+         }
 
 
         .gallery-item img {
@@ -172,6 +294,183 @@
         border-radius: 5px;
     }
 
+    .home-container {
+    text-align: center;
+    padding: 50px 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 10px;
+    }
+
+    .home-intro {
+        font-size: 1.3rem;
+        font-weight: 500;
+        margin-bottom: 30px;
+    }
+
+    .features-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .feature {
+        width: 280px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .feature:hover {
+        transform: scale(1.05);
+    }
+
+    .feature img {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .feature h3 {
+        color: #ffcc00;
+        margin-top: 10px;
+    }
+
+    /* ===== About Section Styling ===== */
+.about-section {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(0, 0, 0, 0.8); /* Darker background for better contrast */
+    border-radius: 10px;
+}
+
+/* ===== About Heading ===== */
+.about-section h2 {
+    font-size: 2rem;
+    color: #ffcc00;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* ===== About Description ===== */
+.about-section p {
+    font-size: 1.1rem;
+    color: #000000;
+    max-width: 800px;
+    margin: 0 auto 30px auto;
+    line-height: 1.6;
+}
+
+/* ===== About Cards (Flexbox) ===== */
+.about-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* ===== About Boxes Styling ===== */
+.about-card {
+    flex: 1 1 300px;
+    max-width: 350px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    backdrop-filter: blur(8px); /* Glassmorphism effect */
+}
+
+/* ===== About Boxes Hover Effect ===== */
+.about-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
+}
+
+/* ===== Icons & Headings Inside Cards ===== */
+.about-card h3 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ffcc00;
+    margin-top: 10px;
+}
+
+/* ===== About Boxes Text ===== */
+.about-card p {
+    font-size: 1rem;
+    color: #000000 !important; /* Change to any color */
+    text-align: center;
+    margin-top: 10px;
+    padding: 0 10px;
+}
+
+
+
+/* ===== Ensure Flexboxes Have Same Size in Home & About Section ===== */
+.features-grid,
+.about-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Space between boxes */
+    align-items: stretch; /* Makes all boxes same height */
+}
+
+/* ===== Flexbox Styling for Uniform Size ===== */
+.feature,
+.about-card {
+    flex: 1 1 350px; /* Flexible size, ensures consistency */
+    max-width: 370px; /* Ensures they don't get too large */
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Aligns text properly */
+    transition: transform 0.3s ease-in-out;
+    height: auto; /* Ensures no box is smaller or taller than others */
+}
+
+/* ===== Fix Image Size (Ensure Full Visibility) ===== */
+.feature img,
+.about-card img {
+    width: 100%;
+    height: auto;
+    max-height: 250px; /* Prevents images from being cropped */
+    object-fit: contain; /* Ensures full image visibility */
+    border-radius: 10px;
+}
+
+/* ===== Text Formatting for Neat Layout ===== */
+.feature h3,
+.about-card h3 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ffcc00;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.feature p,
+.about-card p {
+    font-size: 1rem;
+    color: #f5f5f5;
+    text-align: center;
+    margin-top: 10px;
+    padding: 0 10px; /* Prevents text from touching edges */
+}
+
+/* Adds space below sections */
+.features-grid,
+.about-content {
+    margin-bottom: 40px;
+}
+
+
 
     </style>
 </head>
@@ -180,13 +479,20 @@
         <h1>Welcome to Anime World</h1>
         <p>Explore new Animes</p>
     </header>
-    <nav>
+    
+    <button class="menu-button" onclick="toggleMenu()">☰</button>
+    <div class="menu" id="menu">
         <a href="#home">Home</a>
         <a href="Timeline.html">Ongoing Animes</a>
         <a href="Upcoming_animes.html">Upcoming Animes</a>
         <a href="Registration_form.html">Registration</a>
         <a href="Contact_us.html">Contact</a>
         <a href="wishlist.html">Wishlist</a>
+    </div>
+    <nav>
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#Upcoming_Animes" class="nav-link">Trending Animes</a>
     </nav>
     <div id="search-container">
         <input type="text" id="search-box" placeholder="Search Anime...">
@@ -197,25 +503,71 @@
 
     <!-- Home Section -->
     <section id="home">
-        <h2>Home</h2>
-        <p>Discover Your Next Favorite Anime!</p>
+        <div class="home-container">
+            <h2>🌟 Welcome to Anime Bits 🌟</h2>
+            <p class="home-intro">
+                Step into the world of anime, where **imagination meets reality** and every story is an unforgettable journey!  
+            </p>
+        
+            <div class="features-grid">
+                <div class="feature">
+                    <img src="https://www.anitrendz.com/_next/image?url=https%3A%2F%2Fanitrendz.net%2Fnews%2Fwp-content%2Fuploads%2F2025%2F02%2FWinter-2025-Anime-3.png&w=1920&q=75" alt="Trending Anime">
+                    <h3>🔥 Trending Now</h3>
+                    <p>Stay updated with the **hottest anime** that fans can't stop talking about!</p>
+                </div>
+                
+                <div class="feature">
+                    <img src="https://preview.redd.it/qgei52mx4t661.png?auto=webp&s=74f27161613a37c377d6ed838616e4b705d4152b" alt="Upcoming Releases">
+                    <h3>📅 Upcoming Releases</h3>
+                    <p>Never miss a **new anime premiere** – we've got all the latest updates!</p>
+                </div>
+        
+                <div class="feature">
+                    <img src="https://assets.jaianimeclub.com/images/settings/top/DXBdEsY334YgdiLQgoVNFsB4sQ2eqd2P9PY2mqKB.jpg" alt="Community">
+                    <h3>💬 Join the Community</h3>
+                    <p>Discuss theories, share reviews, and connect with fellow anime lovers!</p>
+                </div>
+            </div>
+        </div>
+        
     </section>
     
       
     <!-- About Section -->
     <section id="about">
-        <h2>About</h2>
-        <p>Anime Bits is your gateway to the magical world of anime. From classics to the latest releases, we bring you everything you need to stay updated and dive deep into your favorite stories.</p>
-    </section>
-
-    <!-- Upcoming Animes -->
-    <section id="Upcoming Animes">
-        <h2>Animes</h2>
-        <div class="anime-section">
+        <div class="about-container">
+            <h2>✨ About Anime Bits ✨</h2>
+            <p class="about-intro">
+                **Anime Bits** is more than just a website—it's a gateway to the world of anime.  
+                From **epic battles** to **heartwarming stories**, we bring you **everything anime** in one place.  
+            </p>
+        
+            <div class="about-content">
+                <div class="about-card">
+                    <h3>🎬 Anime Universe</h3>
+                    <img src ="https://cm1.aminoapps.com/7662/8b0dd578537c898a96d851afccf36feb4ca2d451_00.jpg">
+                    <p>Explore **hand-picked recommendations, in-depth reviews**, and **anime rankings** curated just for you.</p>
+                </div>
+        
+                <div class="about-card">
+                    <h3>🔮 Hidden Gems</h3>
+                    <p>Discover **underrated masterpieces** and **cult classics** that deserve more attention!</p>
+                </div>
+        
+                <div class="about-card">
+                    <h3>🛠️ Cool Features</h3>
+                    <p>Use our **wishlist, countdowns, and interactive anime tools** to enhance your anime experience.</p>
+                </div>
+            </div>
         </div>
+        
+
     </section>
-    
+    <section id = "Upcoming_Animes">
     <section class="photo-gallery">
+        <div class="photo-gallery-container">
+            <h2>Trending Animes</h2>
+        </div>
         <div class="gallery-item">
           <img src="https://i.pinimg.com/736x/bf/16/a6/bf16a658662656209bcaacaa76ca771a.jpg" alt="Solo Leveling" />
           <div class ='name'>Solo Leveling</div>
@@ -246,7 +598,13 @@
         </div>
         <!-- Add more gallery items as needed -->
       </section>
+    </section>
       <script>
+        function toggleMenu() {
+            let menu = document.getElementById("menu");
+            menu.classList.toggle("active");
+        }
+
         document.getElementById("search-button").addEventListener("click", function () {
             let query = document.getElementById("search-box").value;
             if (query.trim() !== "") {
@@ -296,7 +654,43 @@
         
                 resultsDiv.appendChild(animeCard);
             });
+            
         }
+        // ScrollSpy Functionality
+        window.addEventListener("scroll", function () {
+            let sections = document.querySelectorAll("section");
+            let navLinks = document.querySelectorAll("nav a");
+
+            let currentSection = "";
+
+            sections.forEach((section) => {
+                let sectionTop = section.offsetTop - 60; // Adjust for sticky nav
+                let sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute("id");
+                }
+            });
+
+            navLinks.forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href").substring(1) === currentSection) {
+                    link.classList.add("active");
+                }
+            });
+        });
+
+        // Smooth Scrolling for Navigation
+        document.querySelectorAll("nav a").forEach((link) => {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                let targetId = this.getAttribute("href").substring(1);
+                let targetSection = document.getElementById(targetId);
+                window.scrollTo({
+                    top: targetSection.offsetTop - 50, // Adjust for sticky nav
+                    behavior: "smooth"
+                });
+            });
+        });
         </script>        
     <footer>
         <p>&copy; Phone: 542136589 | Email: sahua@rknec.edu</p>
