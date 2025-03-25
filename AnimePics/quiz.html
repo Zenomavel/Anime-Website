@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Quiz Challenge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        
+        :root {
+            --primary: #ff2d75;
+            --secondary: #00f7ff;
+            --bg: #0a0a20;
+            --card-bg: rgba(10, 10, 32, 0.85);
+            --text: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -2;
+            filter: blur(5px) brightness(0.5);
+        }
+        
+        .container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 20px var(--primary);
+            border: 2px solid var(--secondary);
+            margin: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px var(--primary);
+        }
+        
+        #timer {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            min-height: 60px;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .option {
+            background: rgba(42, 42, 74, 0.7);
+            color: var(--text);
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            padding: 0.8rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background: rgba(0, 247, 255, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        #result {
+            margin: 1rem 0;
+            font-weight: bold;
+            min-height: 30px;
+        }
+        
+        #score {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+        
+        #restart-btn, #share-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            margin: 0.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        #restart-btn:hover, #share-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--primary);
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            display: none;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            opacity: 0;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video id="bg-video" autoplay loop muted>
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4" type="video/mp4">
+    </video>
+    
+    <div class="container">
+        <h1>Anime Quiz Challenge</h1>
+        <div id="timer">Time Left: <span id="time">30</span> sec</div>
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <div id="result"></div>
+        <div id="score">Score: 0</div>
+        <div class="btn-container" id="btn-container">
+            <button id="restart-btn">Play Again</button>
+            <button id="share-btn" style="display:none">Share Score</button>
+        </div>
+    </div>
+    
+    <div class="celebration" id="celebration"></div>
+
+    <script>
+        // Quiz questions (expanded list)
+        const questions = [
+            {
+                question: "Who is Naruto's father?",
+                options: ["Jiraiya", "Minato", "Hashirama", "Tobirama"],
+                answer: "Minato"
+            },
+            {
+                question: "What is Luffy's signature attack?",
+                options: ["Kamehameha", "Gum-Gum Pistol", "Rasengan", "Getsuga Tensho"],
+                answer: "Gum-Gum Pistol"
+            },
+            {
+                question: "Which anime features 'Death Note'?",
+                options: ["Bleach", "Death Note", "Attack on Titan", "Naruto"],
+                answer: "Death Note"
+            },
+            {
+                question: "Who is the main character in 'Attack on Titan'?",
+                options: ["Levi", "Mikasa", "Eren", "Armin"],
+                answer: "Eren"
+            },
+            {
+                question: "What is the name of Goku's Saiyan name?",
+                options: ["Kakarot", "Vegeta", "Bardock", "Raditz"],
+                answer: "Kakarot"
+            },
+            {
+                question: "Which anime features 'Bankai'?",
+                options: ["Naruto", "One Piece", "Bleach", "Dragon Ball"],
+                answer: "Bleach"
+            },
+            {
+                question: "Who is known as the 'Hero Killer' in My Hero Academia?",
+                options: ["All Might", "Endeavor", "Stain", "Dabi"],
+                answer: "Stain"
+            }
+        ];
+
+        // Quiz variables
+        let currentQuestion = 0;
+        let score = 0;
+        let timer = 30;
+        let timerInterval;
+        let quizCompleted = false;
+
+        // Start the quiz
+        startQuiz();
+
+        function startQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            quizCompleted = false;
+            document.getElementById('score').textContent = `Score: ${score}`;
+            document.getElementById('restart-btn').style.display = 'none';
+            document.getElementById('share-btn').style.display = 'none';
+            document.getElementById('result').textContent = '';
+            loadQuestion();
+            startTimer();
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                endQuiz();
+                return;
+            }
+
+            const q = questions[currentQuestion];
+            document.getElementById('question').textContent = q.question;
+            const optionsEl = document.getElementById('options');
+            optionsEl.innerHTML = '';
+            
+            q.options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option';
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option);
+                optionsEl.appendChild(button);
+            });
+            
+            resetTimer();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function resetTimer() {
+            timer = 30;
+            document.getElementById('time').textContent = timer;
+        }
+
+        function updateTimer() {
+            timer--;
+            document.getElementById('time').textContent = timer;
+            
+            if (timer <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('result').textContent = "Time's up!";
+                document.getElementById('result').style.color = "#ff2d75";
+                currentQuestion++;
+                setTimeout(loadQuestion, 1500);
+            }
+        }
+
+        function checkAnswer(selected) {
+            clearInterval(timerInterval);
+            
+            const correct = questions[currentQuestion].answer;
+            const resultEl = document.getElementById('result');
+            const isCorrect = selected === correct;
+            
+            if (isCorrect) {
+                resultEl.textContent = "Correct! 🎉";
+                resultEl.style.color = "#00ff88";
+                score++;
+                if (currentQuestion === questions.length - 1) {
+                    showCelebration();
+                }
+            } else {
+                resultEl.textContent = `Wrong! Correct answer: ${correct}`;
+                resultEl.style.color = "#ff2d75";
+            }
+
+            document.getElementById('score').textContent = `Score: ${score}`;
+            
+            // Disable all options after answering
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.disabled = true;
+                if (option.textContent === correct) {
+                    option.style.background = "#00ff88";
+                    option.style.color = "#000";
+                } else if (option.textContent === selected && !isCorrect) {
+                    option.style.background = "#ff2d75";
+                }
+            });
+
+            currentQuestion++;
+            
+            setTimeout(() => {
+                if (currentQuestion < questions.length) {
+                    loadQuestion();
+                } else {
+                    endQuiz();
+                }
+            }, 1500);
+        }
+
+        function endQuiz() {
+            clearInterval(timerInterval);
+            quizCompleted = true;
+            document.getElementById('question').textContent = "Quiz Complete!";
+            document.getElementById('options').innerHTML = '';
+            document.getElementById('result').textContent = `You scored ${score} out of ${questions.length}!`;
+            document.getElementById('restart-btn').style.display = 'inline-block';
+            document.getElementById('share-btn').style.display = 'inline-block';
+            
+            if (score === questions.length) {
+                showCelebration();
+            }
+        }
+
+        function showCelebration() {
+            const celebration = document.getElementById('celebration');
+            celebration.style.display = 'block';
+            
+            // Create confetti
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = 
+                    ['#ff2d75', '#00f7ff', '#00ff88', '#ffcc00'][Math.floor(Math.random() * 4)];
+                celebration.appendChild(confetti);
+                
+                // Animation
+                const animationDuration = Math.random() * 3 + 2;
+                confetti.style.animation = `fall ${animationDuration}s linear forwards`;
+                
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, animationDuration * 1000);
+            }
+            
+            // Hide after animation
+            setTimeout(() => {
+                celebration.style.display = 'none';
+                celebration.innerHTML = '';
+            }, 3000);
+        }
+
+        // Share functionality
+        document.getElementById('share-btn').addEventListener('click', () => {
+            const shareText = `I scored ${score}/${questions.length} on the Anime Quiz Challenge! Can you beat my score?`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Anime Quiz Challenge',
+                    text: shareText,
+                    url: window.location.href
+                }).catch(err => {
+                    console.log('Error sharing:', err);
+                    copyToClipboard(shareText);
+                });
+            } else {
+                copyToClipboard(shareText);
+            }
+        });
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard! Paste it anywhere to share.');
+            }).catch(err => {
+                console.log('Error copying:', err);
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Copied to clipboard! Paste it anywhere to share.');
+            });
+        }
+
+        // Restart button
+        document.getElementById('restart-btn').addEventListener('click', startQuiz);
+    </script>
+</body>
+</html>
